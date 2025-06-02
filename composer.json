@@ -27,6 +27,11 @@
             "Sushant\\NepaliPhoneValidation\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Sushant\\NepaliPhoneValidation\\Tests\\": "tests"
+        }
+    },
     "config": {
         "sort-packages": true
     },
