@@ -2,18 +2,15 @@
 
 namespace Sushant\NepaliPhoneValidation\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class NepaliPhone implements Rule
+class NepaliPhone implements ValidationRule
 {
     /**
      * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
      */
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // Remove all non-digit characters
         $number = preg_replace('/[^\d]/', '', $value);
@@ -22,16 +19,10 @@ class NepaliPhone implements Rule
         $number = preg_replace('/^(?:\+?977|0)/', '', $number);
 
         // must start with one of the prefixes and followed by 7 digits
-        return preg_match('/^(984|985|986|980|981|982|961|988|972)\d{7}$/', $number);
-    }
+        $isValid = preg_match('/^(?:984|985|986|980|981|982|961|988|972)\d{7}$/', $number);
 
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return 'The :attribute must be a valid Nepali mobile number.';
+        if ($isValid !== 1) {
+            $fail('The :attribute must be a valid Nepali mobile number.');
+        }
     }
 }
